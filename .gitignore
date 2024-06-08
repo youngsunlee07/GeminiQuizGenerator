@@ -3,6 +3,7 @@ db/
 __pycache__/
 application_key.json
 ai-data.json
+/keys/*
 
 # Tasks
 *_solution.py

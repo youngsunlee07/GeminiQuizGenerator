@@ -7,14 +7,6 @@ sys.path.append(os.path.abspath('../../'))
 
 class QuizGenerator:
     def __init__(self, topic=None, num_questions=1, vectorstore=None):
-        """
-        Initializes the QuizGenerator with a required topic, the number of questions for the quiz,
-        and an optional vectorstore for querying related information.
-
-        :param topic: A string representing the required topic of the quiz.
-        :param num_questions: An integer representing the number of questions to generate for the quiz, up to a maximum of 10.
-        :param vectorstore: An optional vectorstore instance (e.g., ChromaDB) to be used for querying information related to the quiz topic.
-        """
         if not topic:
             self.topic = "General Knowledge"
         else:
@@ -52,81 +44,37 @@ class QuizGenerator:
             """
     
     def init_llm(self):
-        """
-        Task: Initialize the Large Language Model (LLM) for quiz question generation.
-
-        Overview:
-        This method prepares the LLM for generating quiz questions by configuring essential parameters such as the model name, temperature, and maximum output tokens. The LLM will be used later to generate quiz questions based on the provided topic and context retrieved from the vectorstore.
-
-        Steps:
-        1. Set the LLM's model name to "gemini-pro" 
-        2. Configure the 'temperature' parameter to control the randomness of the output. A lower temperature results in more deterministic outputs.
-        3. Specify 'max_output_tokens' to limit the length of the generated text.
-        4. Initialize the LLM with the specified parameters to be ready for generating quiz questions.
-
-        Implementation:
-        - Use the VertexAI class to create an instance of the LLM with the specified configurations.
-        - Assign the created LLM instance to the 'self.llm' attribute for later use in question generation.
-
-        Note: Ensure you have appropriate access or API keys if required by the model or platform.
-        """
         self.llm = VertexAI(
-            ############# YOUR CODE HERE ############
+            model_name = "gemini-pro",
+            temperature = 0.8, 
+            max_output_tokens = 500
         )
         
     def generate_question_with_vectorstore(self):
-        """
-        Task: Generate a quiz question using the topic provided and context from the vectorstore.
-
-        Overview:
-        This method leverages the vectorstore to retrieve relevant context for the quiz topic, then utilizes the LLM to generate a structured quiz question in JSON format. The process involves retrieving documents, creating a prompt, and invoking the LLM to generate a question.
-
-        Prerequisites:
-        - Ensure the LLM has been initialized using 'init_llm'.
-        - A vectorstore must be provided and accessible via 'self.vectorstore'.
-
-        Steps:
-        1. Verify the LLM and vectorstore are initialized and available.
-        2. Retrieve relevant documents or context for the quiz topic from the vectorstore.
-        3. Format the retrieved context and the quiz topic into a structured prompt using the system template.
-        4. Invoke the LLM with the formatted prompt to generate a quiz question.
-        5. Return the generated question in the specified JSON structure.
-
-        Implementation:
-        - Utilize 'RunnableParallel' and 'RunnablePassthrough' to create a chain that integrates document retrieval and topic processing.
-        - Format the system template with the topic and retrieved context to create a comprehensive prompt for the LLM.
-        - Use the LLM to generate a quiz question based on the prompt and return the structured response.
-
-        Note: Handle cases where the vectorstore is not provided by raising a ValueError.
-        """
-        ############# YOUR CODE HERE ############
         # Initialize the LLM from the 'init_llm' method if not already initialized
         # Raise an error if the vectorstore is not initialized on the class
-        ############# YOUR CODE HERE ############
+        if not self.llm:
+            self.init_llm()
+        if not self.vectorstore:
+            raise ValueError("Vectorstore not provided.")        
         
         from langchain_core.runnables import RunnablePassthrough, RunnableParallel
 
-        ############# YOUR CODE HERE ############
         # Enable a Retriever using the as_retriever() method on the VectorStore object
-        # HINT: Use the vectorstore as the retriever initialized on the class
-        ############# YOUR CODE HERE ############
-        
-        ############# YOUR CODE HERE ############
+        retriever = self.vectorstore.as_retriever()        
+
         # Use the system template to create a PromptTemplate
-        # HINT: Use the .from_template method on the PromptTemplate class and pass in the system template
-        ############# YOUR CODE HERE ############
-        
+        prompt = PromptTemplate.from_template(self.system_template)
+                
         # RunnableParallel allows Retriever to get relevant documents
         # RunnablePassthrough allows chain.invoke to send self.topic to LLM
         setup_and_retrieval = RunnableParallel(
             {"context": retriever, "topic": RunnablePassthrough()}
         )
-        
-        ############# YOUR CODE HERE ############
+    
         # Create a chain with the Retriever, PromptTemplate, and LLM
-        # HINT: chain = RETRIEVER | PROMPT | LLM 
-        ############# YOUR CODE HERE ############
-
+        chain = setup_and_retrieval | prompt | self.llm 
+        
         # Invoke the chain with the topic as input
         response = chain.invoke(self.topic)
         return response
@@ -141,7 +89,7 @@ if __name__ == "__main__":
     
     embed_config = {
         "model_name": "textembedding-gecko@003",
-        "project": "YOUR-PROJECT-ID-HERE",
+        "project": "geminiquizify-425218",
         "location": "us-central1"
     }
     

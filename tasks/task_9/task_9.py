@@ -42,7 +42,6 @@ if __name__ == "__main__":
         processor.ingest_documents()
     
         embed_client = EmbeddingClient(**embed_config) 
-    
         chroma_creator = ChromaCollectionCreator(processor, embed_client)
     
         question = None

@@ -1,9 +1,13 @@
+.gitignore
 env/
 db/
 __pycache__/
 application_key.json
 ai-data.json
 /keys/*
+LICENSE
+requirements.txt
+main.py
 
 # Tasks
 *_solution.py

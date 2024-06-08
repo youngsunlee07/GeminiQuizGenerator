@@ -1,6 +1,6 @@
 import streamlit as st
 from langchain_google_vertexai import VertexAIEmbeddings
-class EmbeddingClient:   
+class EmbeddingClient: 
     def __init__(self, model_name, project, location):
         # Initialize the VertexAIEmbeddings client with the given parameters
         # Read about the VertexAIEmbeddings wrapper from Langchain here

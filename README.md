@@ -24,7 +24,7 @@ This project is a web application that generates quiz questions from PDF documen
 
 3. Navigate to the project directory:
     ```bash
-    cd GoogleGemini
+    cd GeminiQuizify
     ```
 
 4. Install the required packages:

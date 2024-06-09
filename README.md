@@ -19,7 +19,7 @@ This project is a web application that generates quiz questions from PDF documen
 
 2. Clone this repository:
     ```bash
-    git clone https://github.com/youngsunlee07/GoogleGemini.git
+    git clone https://github.com/youngsunlee07/GeminiQuizify.git
     ```
 
 3. Navigate to the project directory:

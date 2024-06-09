@@ -29,7 +29,7 @@ This project is a web application that generates quiz questions from PDF documen
 
 4. Install the required packages:
     ```bash
-    pip install streamlit google-cloud-aiplatform
+    pip install -r requirements.txt
     ```
 
 5. Install and initialize the Google Cloud SDK:
@@ -48,12 +48,7 @@ This project is a web application that generates quiz questions from PDF documen
     export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/keyfile.json"
     ```
 
-7. Install the required packages:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-8. Run the Streamlit application:
+7. Run the Streamlit application:
     ```bash
     streamlit run app.py
     ```
@@ -62,7 +57,7 @@ This project is a web application that generates quiz questions from PDF documen
 1. Run the `task_10.py` application and upload a PDF file.
 2. Enter the quiz topic and the number of questions.
 3. Click the `Submit` button to store the document in ChromaDB and generate quiz questions.
-4. Review the generated quiz questions and navigate through them using the `Next` and `Previous` buttons.
+4. Review the generated quiz questions and navigate through them using the `Next Question` and `Previous Question` buttons.
 
 ## Key Features
 - PDF document upload and processing.
